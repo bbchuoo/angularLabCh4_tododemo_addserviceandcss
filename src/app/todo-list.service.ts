@@ -1,15 +1,11 @@
-import { Component } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { TodoItem } from './shared/todo-item';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+@Injectable({
+  providedIn: 'root'
 })
-export class AppComponent {
-  title = 'app works!';
-  
-  
+export class TodoListService {
+
   todoItems: TodoItem[] = [{
     id: 1,
     value: 'Todo Item No.1',
@@ -23,8 +19,14 @@ export class AppComponent {
     value: 'Todo Item No.3',
     done: false
   }];
-  
-  addTodoItem(text) {
+
+  constructor() { }
+
+  getTodoList() {
+    return this.todoItems;
+  }
+
+  addTodo(text) {
     this.todoItems.push({
       id: (new Date()).getTime(),
       value: text,
@@ -32,12 +34,11 @@ export class AppComponent {
     });
   }
 
-
-  deleteTodoItem(item) {
-    console.log('刪除', item);
-    this.todoItems.splice(this.todoItems.indexOf(item), 1);
+  deleteItem(item: TodoItem) {
+    this.todoItems = this.todoItems.filter(todoItem => todoItem.id !== item.id);
   }
 
-
-
+  toogleItemStatus(item: TodoItem) {
+    item.done = !item.done;
+  }
 }
